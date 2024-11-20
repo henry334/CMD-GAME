@@ -165,7 +165,7 @@ void Dungeon::handleRoomChange(std::shared_ptr<Room> &room, const std::string &a
 
 void Dungeon::actionHandler(std::shared_ptr<Room> &room, const std::string &action)
 {
-    if (action.size() < 2) {
+    if (action.size() < 2 && (action.size() >= 1 && action[0] != 'e')) {
         std::cout << "Invalid action" << std::endl;
         return;
     };
