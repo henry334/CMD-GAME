@@ -100,3 +100,50 @@ void GameMap::enterRoom(std::size_t x, std::size_t y, ACharacter &player)
     std::cout << "You entered the room: " << room->getName() << std::endl;
     player.setNewPosition(x, y);
 }
+
+void GameMap::displayMap() const
+{
+    std::shared_ptr<Room> starterRoom = this->map[FIRST_ROOM_X][FIRST_ROOM_Y];
+    std::vector<std::string> visited;
+    std::cout << "Game Map:" << std::endl;
+    this->displayLinkedRooms(starterRoom, visited, "", true, 0);
+    InputManager::getUserInput("Continue press any key: ");
+}
+
+void GameMap::displayLinkedRooms(std::shared_ptr<Room> room, std::vector<std::string>& visited, const std::string& prefix = "", bool recursive, int level) const
+{
+    // Mark the current room as visited
+    visited.push_back(room->getName());
+
+    // Display the current room with prefix
+    std::cout << prefix << (level > 0 ? "|-- " : "") << room->getName();
+    if (room->getIsTheEnd())
+        std::cout << " (End)";
+    std::cout << std::endl;
+
+    const std::vector<std::shared_ptr<Room>>& linkedRooms = room->getLinkedRooms();
+    size_t numLinkedRooms = linkedRooms.size();
+    size_t count = 0;
+
+    for (std::shared_ptr<Room> linkedRoom : linkedRooms) {
+        std::string roomName = linkedRoom->getName();
+
+        // Skip already visited rooms
+        if (std::find(visited.begin(), visited.end(), roomName) != visited.end())
+            continue;
+
+        // Increment the count of processed linked rooms
+        count++;
+
+        // Create the prefix for the next level
+        std::string nextPrefix = prefix + (level > 0 ? "|   " : "    ");
+        if (count == numLinkedRooms) {
+            nextPrefix = prefix + (level > 0 ? "    " : "    "); // No continuation for the last room
+        }
+
+        // Recursively display linked rooms
+        if (recursive) {
+            this->displayLinkedRooms(linkedRoom, visited, nextPrefix, true, level + 1);
+        }
+    }
+}

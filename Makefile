@@ -24,6 +24,7 @@ SRC_CORE	=	main.cpp	\
 				src/weapons/Sword.cpp	\
 				src/weapons/Weapon.cpp	\
 				src/InputManager.cpp	\
+				src/items/Map.cpp	\
 				src/Room.cpp	\
 				src/Chest.cpp	\
 				src/GameMap.cpp	\
@@ -32,7 +33,7 @@ OBJ_CORE	=	$(SRC_CORE:.cpp=.o)
 
 CFLAGS	=	-std=c++20 -Wall -Wextra -Werror -g3 -g
 
-CPPFLAGS	=	-I./ -I./class/ -I./class/characters/ -I./class/potions/ -I./class/weapons/
+CPPFLAGS	=	-I./ -I./class/ -I./class/characters/ -I./class/potions/ -I./class/weapons/ -I./class/items/
 
 NAME	=	assignement
 

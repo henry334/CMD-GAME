@@ -6,6 +6,7 @@
 */
 
 #include "Weapon.hpp"
+#include "Dungeon.hpp"
 
 Weapon::Weapon(std::size_t damage, const std::string &name)
 {
@@ -13,7 +14,7 @@ Weapon::Weapon(std::size_t damage, const std::string &name)
     this->damage = damage;
 }
 
-void Weapon::use(ACharacter &character)
+void Weapon::use(ACharacter &character, Dungeon *dungeon)
 {
     character.setStrength(this->damage);
     std::cout << "You used a " << this->name << std::endl;

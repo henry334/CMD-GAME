@@ -6,6 +6,7 @@
 */
 
 #include "Potion.hpp"
+#include "Dungeon.hpp"
 
 Potion::Potion(const std::string &name, float healthGen, float defenseGen, float stengthGen, float ultiDamage, float ultiCost, float manaBar, float maxManaBar)
 {
@@ -19,7 +20,7 @@ Potion::Potion(const std::string &name, float healthGen, float defenseGen, float
     this->maxManaBar = maxManaBar;
 }
 
-void Potion::use(ACharacter &character)
+void Potion::use(ACharacter &character, Dungeon *dungeon)
 {
     character.setHealth(character.getHealth() + this->healthGen);
     character.setDefense(character.getDefense() + this->defenseGen);

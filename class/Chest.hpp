@@ -13,6 +13,7 @@
 #include "Sword.hpp"
 #include "StrengthPotion.hpp"
 #include "Axe.hpp"
+#include "Map.hpp"
 #include "My.h"
 
 class Chest {
@@ -29,6 +30,7 @@ class Chest {
             []() {return std::make_unique<ManaPotion>();},
             []() {return std::make_unique<DefensePotion>();},
             []() {return std::make_unique<StrengthPotion>();},
-            []() {return std::make_unique<Sword>();}
+            []() {return std::make_unique<Sword>();},
+            []() {return std::make_unique<Map>();}
         };
 };

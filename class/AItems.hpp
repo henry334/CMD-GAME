@@ -9,6 +9,8 @@
 #include <iostream>
 #include "ACharacter.hpp"
 
+class Dungeon;
+
 class AItems {
     public:
         AItems() = default;
@@ -18,7 +20,7 @@ class AItems {
         std::string getName() const {return this->name;};
         virtual void display() const = 0;
         virtual void displayDescription() const = 0;
-        virtual void use(ACharacter &character ) = 0;
+        virtual void use(ACharacter &character, Dungeon *dungeon = nullptr) = 0;
     protected:
         std::string name;
 };

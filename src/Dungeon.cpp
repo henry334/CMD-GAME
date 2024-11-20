@@ -14,7 +14,7 @@ Dungeon::Dungeon(ACharacter &player) : player(player)
 void Dungeon::startDungeon() {
     this->display();
     this->player.displayCharacterInfo();
-    this->inputManager.getUserInput("Press any key to start the game: ");
+    InputManager::getUserInput("Press any key to start the game: ");
     this->map.enterRoom(FIRST_ROOM_X, FIRST_ROOM_Y, this->player);
     this->coreGameLoop();
 }
@@ -65,7 +65,7 @@ bool Dungeon::battelMode(ACharacter &enemy)
 {
     while (!this->player.getIsDead() && !enemy.getIsDead()) {
         this->displayBattleMode(this->player, enemy);
-        std::string action = this->inputManager.getUserInput("Choose your action: (1) Attack | (2) Ultimate: ", {"1", "2"});
+        std::string action = InputManager::getUserInput("Choose your action: (1) Attack | (2) Ultimate: ", {"1", "2"});
         std::system("clear");
         if (action == "1") {
             this->player.attack(enemy);
@@ -104,7 +104,7 @@ void Dungeon::coreGameLoop()
         if (room->getIsTheEnd())
             actionStr += "(E) Exit ";
         actionStr += ": ";
-        std::string action = this->inputManager.getUserInput(actionStr);
+        std::string action = InputManager::getUserInput(actionStr);
         this->actionHandler(room, action);
     }
 }
@@ -136,9 +136,9 @@ void Dungeon::handleChestOpening(std::shared_ptr<Room> &room, const std::string 
     if (item == nullptr) return;
     item->display();
     item->displayDescription();
-    const std::string resp = this->inputManager.getUserInput("Do you want to use? (Y/N): ", {"y", "n"});
+    const std::string resp = InputManager::getUserInput("Do you want to use? (Y/N): ", {"y", "n"});
     if (resp == "y") {
-        item->use(this->player);
+        item->use(this->player, &(*this));
     } else
         item->drop();
 }
@@ -154,7 +154,7 @@ void Dungeon::handleRoomChange(std::shared_ptr<Room> &room, const std::string &a
     }
     std::shared_ptr<Room> &linkedRoom = room->getLinkedRooms()[roomIndex];
     if (linkedRoom->getEnemies().size() > 0) {
-        const std::string action = this->inputManager.getUserInput("You are about to enter a room with " + std::to_string(linkedRoom->getEnemies().size()) + " enemies, are you sure? (Y/N): ", {"y", "n"});
+        const std::string action = InputManager::getUserInput("You are about to enter a room with " + std::to_string(linkedRoom->getEnemies().size()) + " enemies, are you sure? (Y/N): ", {"y", "n"});
         if (action == "n") {
             std::cout << "You decided to not enter the room" << std::endl;
             return;
@@ -165,11 +165,17 @@ void Dungeon::handleRoomChange(std::shared_ptr<Room> &room, const std::string &a
 
 void Dungeon::actionHandler(std::shared_ptr<Room> &room, const std::string &action)
 {
+    if (action.size() < 2) {
+        std::cout << "Invalid action" << std::endl;
+        return;
+    };
     char c = action[0];
     const std::map<char, std::function<void()>> actions = {
         {'r', [&]() {this->handleRoomChange(room, action);}},
         {'c', [&]() {this->handleChestOpening(room, action);}},
         {'e', [&]() {this->handleExit(room);}}
+
+
     };
     if (actions.find(c) != actions.end())
         actions.at(c)();

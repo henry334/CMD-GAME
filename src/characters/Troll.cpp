@@ -9,7 +9,7 @@
 
 Troll::Troll()
 {
-    this->health = 120;
+    this->health = 100;
     this->strength = 10;
     this->defense = 10;
     this->ultiDamage = 25;

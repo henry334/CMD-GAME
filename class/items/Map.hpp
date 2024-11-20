@@ -15,5 +15,5 @@ class Map : public AItems {
         ~Map() = default;
         void display() const override;
         void displayDescription() const override;
-        void use(ACharacter &character) override;
+        void use(ACharacter &character, Dungeon *dungeon = nullptr) override;
 };

@@ -11,6 +11,8 @@
 #include "InputManager.hpp"
 #include "My.h"
 
+class Chest;
+
 class Dungeon {
     public:
         Dungeon(ACharacter &player);
@@ -26,9 +28,9 @@ class Dungeon {
         void handleRoomChange(std::shared_ptr<Room> &room, const std::string &action);
         void actionHandler(std::shared_ptr<Room> &room, const std::string &action);
         void displayGameInfo(std::shared_ptr<Room> &room) const;
+        GameMap &getMap() {return this->map;};
     private:
         bool haveExit = false;
         ACharacter &player;
         GameMap map;
-        InputManager inputManager;
 };

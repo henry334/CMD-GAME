@@ -10,7 +10,7 @@
 
 class Axe : public Weapon {
     public:
-        Axe(): Weapon(30, "Axe") {};
+        Axe(): Weapon(35, "Axe") {};
         ~Axe() = default;
         void display() const override;
 };

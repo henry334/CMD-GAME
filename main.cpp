@@ -7,6 +7,7 @@
 
 #include "Knight.hpp"
 #include "Dungeon.hpp"
+#include "Map.hpp"
 
 int main() {
     srand(time(0));

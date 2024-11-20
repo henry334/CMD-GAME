@@ -6,6 +6,7 @@
 */
 
 #include "Map.hpp"
+#include "Dungeon.hpp"
 
 Map::Map()
 {
@@ -34,6 +35,8 @@ void Map::displayDescription() const
     std::cout << "This map will help you to find your way out of the dungeon (One time use)" << std::endl;
 }
 
-void Map::use(ACharacter &character)
+void Map::use(ACharacter &character, Dungeon *dungeon)
 {
+    dungeon->getMap().displayMap();
 }
+
