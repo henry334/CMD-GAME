@@ -42,32 +42,34 @@ void ACharacter::setManaBar(float manaBar)
         this->manaBar = manaBar;
 }
 
+// Method for attacking another character
 void ACharacter::attack(ACharacter &target, bool isUlti)
 {
     std::size_t damage = this->strength;
     if (isUlti) {
-        damage = this->ultiDamage;
-        this->manaBar -= this->ultiCost;
-        std::cout << this->name << " uses ulti attack against " << target.getName() << "!" << std::endl;
+        damage = this->ultiDamage; // Use ultimate damage if it's an ultimate attack
+        this->manaBar -= this->ultiCost; // Decrease mana after ulti use
+        std::cout << "\033[32m" << this->name << " uses ulti attack against " << target.getName() << "!\033[0m" << std::endl;
     }
+    // Check if the target is defeated after the attack
     bool isEnemyDead = target.defend(damage, this->name);
     if (isEnemyDead)
-        this->setManaBar(this->manaBar + (target.getUltiDamage() * 0.95));
+        this->setManaBar(this->manaBar + (target.getUltiDamage() * 0.95)); // Regain some mana on kill
 }
 
 bool ACharacter::defend(float strength, const std::string &attackerName)
 {
-    int damage = strength - this->defense;
+    int damage = strength - this->defense; // Reduce damage by defense
     if (damage < 0)
-        damage = 0;
-    this->health -= damage;
+        damage = 0; // Prevent negative damage
+    this->health -= damage; // Deduct health by the damage
     if (this->health <= 0) {
-        this->isDead = true;
-        std::cout << this->name << " has been defeated by " << attackerName << "!" << std::endl;
+        this->isDead = true; // Character dies if health goes below or equal to 0
+        std::cout << "\033[31m" << this->name << " has been defeated by " << attackerName << "!\033[0m" << std::endl;
         return true;
     } else
-        std::cout << this->name << " takes " << damage << " damage from " << attackerName << ", remaining health: " << this->health << std::endl;
-    return false;
+        std::cout << "\033[31m" << this->name << " takes " << damage << " damage from " << attackerName << ", remaining health: " << this->health << "\033[0m" << std::endl;
+    return false; // Character is still alive
 }
 
 void ACharacter::useItem(AItems &item)

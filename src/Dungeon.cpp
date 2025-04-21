@@ -88,24 +88,25 @@ bool Dungeon::battelMode(ACharacter &enemy)
     return false;
 }
 
+// Core game loop where the player interacts with the dungeon
 void Dungeon::coreGameLoop()
 {
     while (!this->player.getIsDead() && !this->haveExit) {
-        std::system("clear");
+        std::system("clear"); // Clear screen
         std::shared_ptr<Room> &room = this->map.getRoom(this->player.getPosition()[0], this->player.getPosition()[1]);
-        this->checkFight(room);
-        if (this->player.getIsDead()) break;
-        this->displayGameInfo(room);
+        this->checkFight(room); // Check for enemies in the room
+        if (this->player.getIsDead()) break; // End loop if player is dead
+        this->displayGameInfo(room); // Display game info for the room
         std::string actionStr = "Choose your action: ";
         if (room->getLinkedRooms().size() > 0)
-            actionStr += "(R[x]) Move ";
+            actionStr += "Move to room (R[x]) "; // If there are linked rooms, allow movement
         if (room->getChests().size() > 0)
-            actionStr += "(C[x]) Open Chest ";
+            actionStr += ", Open chest (C[x]) "; // If there are chests, allow opening
         if (room->getIsTheEnd())
-            actionStr += "(E) Exit ";
+            actionStr += ", Exit (E) "; // If the exit is in the room, allow exit
         actionStr += ": ";
         std::string action = InputManager::getUserInput(actionStr);
-        this->actionHandler(room, action);
+        this->actionHandler(room, action); // Handle the chosen action
     }
 }
 
@@ -183,13 +184,14 @@ void Dungeon::actionHandler(std::shared_ptr<Room> &room, const std::string &acti
         std::cout << "Invalid action" << std::endl;
 }
 
+// Displays information about the current room and the player's status
 void Dungeon::displayGameInfo(std::shared_ptr<Room> &room) const
 {
-    room->DisplayRoom();
-    this->player.displayCharacterInfo();
+    room->DisplayRoom(); // Display room info
+    this->player.displayCharacterInfo(); // Display player info
     std::cout << "Your position in the map: " << this->player.getPosition()[0] << " " << this->player.getPosition()[1] << std::endl;
-    std::cout << "You are in room: " << room->getName() << std::endl;
+    std::cout << "You are in room: \033[32m" << room->getName() << "\033[0m" << std::endl;
     std::cout << "Description of the room: " << std::endl;
-    room->displayConnectedRooms();
-    room->displayChests();
+    room->displayConnectedRooms(); // Display connected rooms
+    room->displayChests(); // Display available chests
 }
